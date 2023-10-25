@@ -1,7 +1,7 @@
 import { twMerge } from "tailwind-merge";
 import { Header } from "./Header";
 import { Video } from "@components/Video";
-import { ClassList } from "./ClassList";
+import { LessonList } from "./LessonList";
 
 export function Player() {
   return (
@@ -18,9 +18,9 @@ export function Player() {
             "border border-zinc-800 bg-zinc-900 shadow",
           )}
         >
-          <Video url="https://www.youtube.com/watch?v=HjRxaC1lmXI" />
+          <Video url="https://www.youtube.com/watch?v=fuN7IV4Mh08" />
 
-          <ClassList />
+          <LessonList />
         </main>
       </div>
     </div>
