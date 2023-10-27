@@ -5,7 +5,7 @@ import { LessonList } from "./LessonList";
 import { useAppSelector } from "@store/index";
 
 export function Player() {
-  const url = useAppSelector((store) => store.player.course.currentLesson.url);
+  const url = useAppSelector((store) => store.player.course.currentLesson);
 
   return (
     <div className="flex h-screen items-center justify-center bg-zinc-950 text-zinc-50">

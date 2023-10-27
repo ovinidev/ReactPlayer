@@ -14,7 +14,7 @@ export const LessonItem = ({ title, url, duration }: LessonItemItemProps) => {
   const dispatch = useDispatch();
 
   const currentLesson = useAppSelector(
-    (store) => store.player.course.currentLesson.url,
+    (store) => store.player.course.currentLesson,
   );
 
   const isCurrentLesson = currentLesson === url;

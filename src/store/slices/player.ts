@@ -51,16 +51,12 @@ export const playerSlice = createSlice({
           ],
         },
       ],
-      currentLesson: {
-        url: "https://www.youtube.com/watch?v=izv6XqFojHY",
-      },
+      currentLesson: "https://www.youtube.com/watch?v=izv6XqFojHY",
     },
   },
   reducers: {
     handleSelectLesson: (state, action) => {
-      state.course.currentLesson = {
-        url: action.payload,
-      };
+      state.course.currentLesson = action.payload;
     },
   },
 });
