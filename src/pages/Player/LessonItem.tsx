@@ -6,31 +6,34 @@ import { twMerge } from "tailwind-merge";
 
 interface LessonItemItemProps {
   title: string;
+  url: string;
   duration: string;
 }
 
-export const LessonItem = ({ title, duration }: LessonItemItemProps) => {
+export const LessonItem = ({ title, url, duration }: LessonItemItemProps) => {
   const dispatch = useDispatch();
+
   const currentLesson = useAppSelector(
-    (store) => store.player.course.currentLesson,
+    (store) => store.player.course.currentLesson.url,
   );
-  console.log(currentLesson);
+
+  const isCurrentLesson = currentLesson === url;
 
   return (
     <button
-      onClick={() => dispatch(handleSelectLesson(title))}
+      onClick={() => dispatch(handleSelectLesson(url))}
       className="text-md group flex items-center gap-3 text-zinc-400"
     >
       <Video
         className={twMerge(
           "ease h-5 w-5 duration-200 group-hover:brightness-90",
-          `${currentLesson === title ? "text-zinc-100" : "text-zinc-500"} `,
+          `${isCurrentLesson ? "text-zinc-100" : "text-zinc-500"} `,
         )}
       />
       <span
         className={twMerge(
           "ease text-left duration-200 group-hover:brightness-90",
-          `${currentLesson === title ? "text-zinc-100" : "text-zinc-500"} `,
+          `${isCurrentLesson ? "text-zinc-100" : "text-zinc-500"} `,
         )}
       >
         {title}
@@ -39,7 +42,7 @@ export const LessonItem = ({ title, duration }: LessonItemItemProps) => {
       <span
         className={twMerge(
           "ease ml-auto font-mono text-sm duration-200 group-hover:brightness-90",
-          `${currentLesson === title ? "text-zinc-100" : "text-zinc-500"} `,
+          `${isCurrentLesson ? "text-zinc-100" : "text-zinc-500"} `,
         )}
       >
         {duration}

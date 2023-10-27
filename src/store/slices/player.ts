@@ -10,8 +10,18 @@ export const playerSlice = createSlice({
           number: "1",
           title: "Iniciando com React",
           lessons: [
-            { id: "1", title: "Fundamentos Redux", duration: "11:20" },
-            { id: "2", title: "Redux na prática", duration: "10:20" },
+            {
+              id: "1",
+              title: "Fundamentos Redux",
+              duration: "11:20",
+              url: "https://www.youtube.com/watch?v=izv6XqFojHY",
+            },
+            {
+              id: "2",
+              title: "Redux na prática",
+              duration: "10:20",
+              url: "https://www.youtube.com/watch?v=fuN7IV4Mh08",
+            },
           ],
         },
         {
@@ -19,7 +29,12 @@ export const playerSlice = createSlice({
           number: "2",
           title: "Iniciando com React",
           lessons: [
-            { id: "1", title: "Fundamentos Context Api", duration: "11:20" },
+            {
+              id: "1",
+              title: "Fundamentos Context Api",
+              duration: "11:20",
+              url: "https://www.youtube.com/watch?v=EsH30VRyfXY",
+            },
           ],
         },
         {
@@ -27,16 +42,25 @@ export const playerSlice = createSlice({
           number: "3",
           title: "Iniciando com React",
           lessons: [
-            { id: "1", title: "Fundamentos Zustand", duration: "11:20" },
+            {
+              id: "1",
+              title: "Fundamentos Zustand",
+              duration: "11:20",
+              url: "https://www.youtube.com/watch?v=bXwJHdpwtvs",
+            },
           ],
         },
       ],
-      currentLesson: "",
+      currentLesson: {
+        url: "https://www.youtube.com/watch?v=izv6XqFojHY",
+      },
     },
   },
   reducers: {
     handleSelectLesson: (state, action) => {
-      state.course.currentLesson = action.payload;
+      state.course.currentLesson = {
+        url: action.payload,
+      };
     },
   },
 });

@@ -34,6 +34,7 @@ export function LessonList() {
                       <LessonItem
                         key={lesson.id}
                         title={lesson.title}
+                        url={lesson.url}
                         duration={lesson.duration}
                       />
                     );
