@@ -1,10 +1,15 @@
 import ReactPlayer from "react-player";
+import { useAppSelector } from "@store/index";
 
-interface Video {
-  url: string;
-}
+export function Video() {
+  const url = useAppSelector((store) => {
+    const { currentLessonIndex, currentModuleIndex } = store.player.course;
 
-export function Video({ url }: Video) {
+    return store.player.course.modules[currentModuleIndex].lessons[
+      currentLessonIndex
+    ].url;
+  });
+
   return (
     <section className="aspect-video w-full flex-1 bg-zinc-950">
       <ReactPlayer

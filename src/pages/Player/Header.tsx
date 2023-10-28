@@ -1,17 +1,23 @@
 import { MessageCircle } from "lucide-react";
 import { twMerge } from "tailwind-merge";
+import { useAppSelector } from "@store/index";
 
-interface HeaderProps {
-  title: string;
-  description: string;
-}
+export function Header() {
+  const { currentModule, currentLesson } = useAppSelector((store) => {
+    const { currentModuleIndex, currentLessonIndex, modules } =
+      store.player.course;
 
-export function Header({ title, description }: HeaderProps) {
+    const currentModule = modules[currentModuleIndex];
+    const currentLesson = currentModule.lessons[currentLessonIndex];
+
+    return { currentModule, currentLesson };
+  });
+
   return (
     <header className="flex items-center justify-between">
       <div className="flex flex-col gap-1">
-        <h1 className="text-2xl font-bold">{title}</h1>
-        <span className="text-md text-zinc-400">{description}</span>
+        <h1 className="text-2xl font-bold">{currentModule.title}</h1>
+        <span className="text-md text-zinc-400">{currentLesson.title}</span>
       </div>
 
       <button

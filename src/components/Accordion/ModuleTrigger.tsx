@@ -3,7 +3,7 @@ import { ChevronUp } from "lucide-react";
 
 interface ModuleTriggerProps {
   title: string;
-  moduleNumber: string;
+  moduleNumber: number;
   lessonQuantity: number;
 }
 

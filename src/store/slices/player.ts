@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const storage = localStorage.getItem("currentLesson");
+const { currentModuleIndex, currentLessonIndex } = storage
+  ? JSON.parse(storage)
+  : { currentModuleIndex: 0, currentLessonIndex: 0 };
+
 export const playerSlice = createSlice({
   name: "player",
   initialState: {
@@ -7,7 +12,6 @@ export const playerSlice = createSlice({
       modules: [
         {
           id: "1",
-          number: "1",
           title: "Iniciando com React",
           lessons: [
             {
@@ -26,8 +30,7 @@ export const playerSlice = createSlice({
         },
         {
           id: "2",
-          number: "2",
-          title: "Iniciando com React",
+          title: "Avançando no Frontend",
           lessons: [
             {
               id: "1",
@@ -39,8 +42,7 @@ export const playerSlice = createSlice({
         },
         {
           id: "3",
-          number: "3",
-          title: "Iniciando com React",
+          title: "Finalizando o React",
           lessons: [
             {
               id: "1",
@@ -51,12 +53,22 @@ export const playerSlice = createSlice({
           ],
         },
       ],
-      currentLesson: "https://www.youtube.com/watch?v=izv6XqFojHY",
+      currentModuleIndex,
+      currentLessonIndex,
     },
   },
   reducers: {
     handleSelectLesson: (state, action) => {
-      state.course.currentLesson = action.payload;
+      state.course.currentModuleIndex = action.payload.moduleIndex;
+      state.course.currentLessonIndex = action.payload.lessonIndex;
+
+      localStorage.setItem(
+        "currentLesson",
+        JSON.stringify({
+          currentModuleIndex: action.payload.moduleIndex,
+          currentLessonIndex: action.payload.lessonIndex,
+        }),
+      );
     },
   },
 });

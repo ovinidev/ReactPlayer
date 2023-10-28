@@ -1,14 +1,27 @@
 import { ModuleTrigger } from "@components/Accordion/ModuleTrigger";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import * as Accordion from "@radix-ui/react-accordion";
-import { useAppSelector } from "@store/index";
 import { twMerge } from "tailwind-merge";
 import { LessonItem } from "./LessonItem";
+import { useDispatch } from "react-redux";
+import { handleSelectLesson } from "@store/slices/player";
+import { useAppSelector } from "@store/index";
 
 export function LessonList() {
   const [parent] = useAutoAnimate();
+  const dispatch = useDispatch();
+
   // Trazer somente as informações que realmente serão utilizadas
   const modules = useAppSelector((store) => store.player.course.modules);
+
+  const currentLesson = useAppSelector((store) => {
+    const currentModuleIndex = store.player.course.currentModuleIndex;
+    const currentLessonIndex = store.player.course.currentLessonIndex;
+
+    return store.player.course.modules[currentModuleIndex].lessons[
+      currentLessonIndex
+    ].url;
+  });
 
   return (
     <aside
@@ -18,24 +31,31 @@ export function LessonList() {
       )}
     >
       <Accordion.Root type="multiple" className="divide-y-2 divide-zinc-900">
-        {modules.map((module) => {
+        {modules.map((module, moduleIndex) => {
           return (
             <Accordion.Item key={module.id} value={module.id}>
               <ModuleTrigger
                 title={module.title}
-                moduleNumber={module.number}
+                moduleNumber={moduleIndex + 1}
                 lessonQuantity={module.lessons.length}
               />
 
               <Accordion.Content ref={parent}>
                 <nav className="relative flex flex-col gap-4 p-6">
-                  {module.lessons.map((lesson) => {
+                  {module.lessons.map((lesson, lessonIndex) => {
                     return (
                       <LessonItem
                         key={lesson.id}
-                        title={lesson.title}
-                        url={lesson.url}
-                        duration={lesson.duration}
+                        lesson={lesson}
+                        isCurrentLesson={currentLesson === lesson.url}
+                        onClick={() =>
+                          dispatch(
+                            handleSelectLesson({
+                              moduleIndex,
+                              lessonIndex,
+                            }),
+                          )
+                        }
                       />
                     );
                   })}
