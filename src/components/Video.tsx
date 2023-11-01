@@ -1,7 +1,11 @@
 import ReactPlayer from "react-player";
 import { useAppSelector } from "@store/index";
+import { useDispatch } from "react-redux";
+import { next } from "@store/slices/player";
 
 export function Video() {
+  const dispatch = useDispatch();
+
   const url = useAppSelector((store) => {
     const { currentLessonIndex, currentModuleIndex } = store.player.course;
 
@@ -9,6 +13,10 @@ export function Video() {
       currentLessonIndex
     ].url;
   });
+
+  const autoPlay = () => {
+    dispatch(next());
+  };
 
   return (
     <section className="aspect-video w-full flex-1 bg-zinc-950">
@@ -18,6 +26,8 @@ export function Video() {
         alt="Youtube vídeo"
         controls
         url={url}
+        onEnded={autoPlay}
+        playing
       />
     </section>
   );

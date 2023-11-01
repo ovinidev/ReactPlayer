@@ -1,4 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { setLessonToStorage } from "@utils/setLessonToStorage";
+
+interface PayloadPlayProps {
+  moduleIndex: number;
+  lessonIndex: number;
+}
 
 const storage = localStorage.getItem("currentLesson");
 const { currentModuleIndex, currentLessonIndex } = storage
@@ -58,20 +64,50 @@ export const playerSlice = createSlice({
     },
   },
   reducers: {
-    handleSelectLesson: (state, action) => {
+    play: (state, action: PayloadAction<PayloadPlayProps>) => {
       state.course.currentModuleIndex = action.payload.moduleIndex;
       state.course.currentLessonIndex = action.payload.lessonIndex;
 
-      localStorage.setItem(
-        "currentLesson",
-        JSON.stringify({
-          currentModuleIndex: action.payload.moduleIndex,
-          currentLessonIndex: action.payload.lessonIndex,
-        }),
-      );
+      setLessonToStorage({
+        moduleIndex: action.payload.moduleIndex,
+        lessonIndex: action.payload.lessonIndex,
+      });
+    },
+    next: (state) => {
+      const module = state.course.modules;
+      const currentLessonIndex = state.course.currentLessonIndex;
+      const currentModuleIndex = state.course.currentModuleIndex;
+      const hasNextModule = module[currentModuleIndex + 1];
+      const hasNextLesson =
+        module[currentModuleIndex].lessons[currentLessonIndex + 1];
+
+      if (hasNextModule) {
+        state.course.currentModuleIndex = currentModuleIndex + 1;
+        state.course.currentLessonIndex = 0;
+
+        setLessonToStorage({
+          moduleIndex: currentModuleIndex + 1,
+          lessonIndex: 0,
+        });
+
+        return;
+      }
+
+      if (hasNextLesson) {
+        state.course.currentLessonIndex = currentLessonIndex + 1;
+
+        setLessonToStorage({
+          moduleIndex: currentModuleIndex,
+          lessonIndex: currentLessonIndex + 1,
+        });
+
+        return;
+      }
+
+      return;
     },
   },
 });
 
 export const playerReducer = playerSlice.reducer;
-export const { handleSelectLesson } = playerSlice.actions;
+export const { play, next } = playerSlice.actions;

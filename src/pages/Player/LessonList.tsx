@@ -4,7 +4,7 @@ import * as Accordion from "@radix-ui/react-accordion";
 import { twMerge } from "tailwind-merge";
 import { LessonItem } from "./LessonItem";
 import { useDispatch } from "react-redux";
-import { handleSelectLesson } from "@store/slices/player";
+import { play } from "@store/slices/player";
 import { useAppSelector } from "@store/index";
 
 export function LessonList() {
@@ -14,7 +14,7 @@ export function LessonList() {
   // Trazer somente as informações que realmente serão utilizadas
   const modules = useAppSelector((store) => store.player.course.modules);
 
-  const currentLesson = useAppSelector((store) => {
+  const currentLessonUrl = useAppSelector((store) => {
     const currentModuleIndex = store.player.course.currentModuleIndex;
     const currentLessonIndex = store.player.course.currentLessonIndex;
 
@@ -23,6 +23,11 @@ export function LessonList() {
     ].url;
   });
 
+  const storage = localStorage.getItem("currentLesson");
+  const { currentModuleIndex } = storage
+    ? JSON.parse(storage)
+    : { currentModuleIndex: 0 };
+
   return (
     <aside
       className={twMerge(
@@ -30,7 +35,11 @@ export function LessonList() {
         "w-80 overflow-y-auto 2xl:w-96",
       )}
     >
-      <Accordion.Root type="multiple" className="divide-y-2 divide-zinc-900">
+      <Accordion.Root
+        defaultValue={[String(currentModuleIndex + 1)]}
+        type="multiple"
+        className="divide-y-2 divide-zinc-900"
+      >
         {modules.map((module, moduleIndex) => {
           return (
             <Accordion.Item key={module.id} value={module.id}>
@@ -47,10 +56,10 @@ export function LessonList() {
                       <LessonItem
                         key={lesson.id}
                         lesson={lesson}
-                        isCurrentLesson={currentLesson === lesson.url}
+                        isCurrentLesson={currentLessonUrl === lesson.url}
                         onClick={() =>
                           dispatch(
-                            handleSelectLesson({
+                            play({
                               moduleIndex,
                               lessonIndex,
                             }),
